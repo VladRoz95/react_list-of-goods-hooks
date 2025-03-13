@@ -27,13 +27,15 @@ enum SortType {
   Default,
 }
 
-function isSortedGoods(goods: string[], { sortedGoods, reversed }: SortStatus) {
+function getSortedGoods(goods: string[], { sortedGoods, reversed }: SortStatus) {
   const visibleGoods = [...goods];
 
   if (sortedGoods === SortType.Alphabet) {
     visibleGoods.sort();
   } else if (sortedGoods === SortType.Length) {
     visibleGoods.sort((a, b) => a.length - b.length);
+  } else if (sortedGoods === SortType.Default) {
+    return 0;
   }
 
   if (reversed) {
@@ -47,7 +49,7 @@ export const App: React.FC = () => {
   const [sortedGoods, setSortedGoods] = useState(SortType.Default);
   const [reversed, setReversed] = useState(false);
 
-  const goods = isSortedGoods(goodsFromServer, { sortedGoods, reversed });
+  const goods = getSortedGoods(goodsFromServer, { sortedGoods, reversed });
 
   return (
     <div className="section content">
@@ -76,7 +78,7 @@ export const App: React.FC = () => {
           Reverse
         </button>
 
-        {(sortedGoods !==SortType.Default || reversed) && (
+        {(sortedGoods !== SortType.Default || reversed) && (
           <button
             type="button"
             className="button is-danger is-light"
