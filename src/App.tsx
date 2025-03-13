@@ -27,16 +27,22 @@ enum SortType {
   Default,
 }
 
-function getSortedGoods(goods: string[], { sortedGoods, reversed }: SortStatus) {
+function getSortedGoods(
+  goods: string[],
+  { sortedGoods, reversed }: SortStatus,
+) {
   const visibleGoods = [...goods];
 
-  if (sortedGoods === SortType.Alphabet) {
-    visibleGoods.sort();
-  } else if (sortedGoods === SortType.Length) {
-    visibleGoods.sort((a, b) => a.length - b.length);
-  } else if (sortedGoods === SortType.Default) {
-    return 0;
-  }
+  visibleGoods.sort((a, b) => {
+    switch (sortedGoods) {
+      case SortType.Alphabet:
+        return a.localeCompare(b);
+      case SortType.Length:
+        return a.length - b.length;
+      default:
+        return 0;
+    }
+  });
 
   if (reversed) {
     visibleGoods.reverse();
